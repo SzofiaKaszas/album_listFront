@@ -20,4 +20,5 @@ export interface AlbumNoId {
 
 export interface AllAlbumsProps {
   albums: Album[];
+  darkMode: boolean
 }
