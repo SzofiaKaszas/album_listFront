@@ -8,7 +8,6 @@ export function AllAlbums({ albums, darkMode }: AllAlbumsProps) {
   );
   const [ascending, setAscending] = useState<boolean>(true);
 
-  // Sort albums based on current settings
   const sortedAlbums = [...albums].sort((a, b) => {
     let aVal: string | number = a[sortBy];
     let bVal: string | number = b[sortBy];
@@ -23,7 +22,6 @@ export function AllAlbums({ albums, darkMode }: AllAlbumsProps) {
 
   return (
     <div className="container mt-4">
-      {/* Header and sorting controls */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h3 style={{ color: darkMode ? "#DFF6E4" : "#2C3E50" }}>Albums</h3>
         <div className="d-flex gap-2">
@@ -63,10 +61,9 @@ export function AllAlbums({ albums, darkMode }: AllAlbumsProps) {
         style={{ maxHeight: "38rem", overflowY: "auto", paddingRight: "10px" }}
       >
         {sortedAlbums.map((album) => {
-          // Determine background color based on rating and dark mode
           let bgColor = "";
-          if (album.rating <= 3) bgColor = darkMode ? "#420e08" : "#E74C3C";
-          else if (album.rating <= 6)
+          if (album.rating <= 4) bgColor = darkMode ? "#420e08" : "#E74C3C";
+          else if (album.rating <= 7)
             bgColor = darkMode ? "#441f09" : "#F39C12";
           else bgColor = darkMode ? "#0c1b12" : "#27AE60";
 
@@ -105,7 +102,6 @@ export function AllAlbums({ albums, darkMode }: AllAlbumsProps) {
   );
 }
 
-// Fetch function stays the same
 export async function getAlbums(): Promise<Album[] | undefined> {
   const response = await fetch(`http://localhost:3000/albums`, {
     method: "GET",
@@ -123,7 +119,6 @@ export async function getAlbums(): Promise<Album[] | undefined> {
   return albumData;
 }
 
-// Album interface stays the same
 export interface Album {
   id: number;
   name: string;

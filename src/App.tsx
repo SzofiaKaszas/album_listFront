@@ -52,7 +52,7 @@ function App() {
       <div className="row g-4">
         {/* Add Album Form */}
         <div className="col-md-4">
-          <AddNewAlbum setAddedNew={setAddedNew} darkMode={darkMode} />
+          <AddNewAlbum setAddedNew={setAddedNew} darkMode={darkMode} albums={albums}/>
         </div>
 
         {/* Album List */}

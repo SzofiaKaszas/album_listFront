@@ -1,21 +1,19 @@
 import type { AlbumOrEp } from "@prisma/client";
-import type { AlbumNoId } from "./types";
+import type { Album, AlbumNoId } from "./types";
 import type { Dispatch, SetStateAction } from "react";
-import { useRef } from "react";
 
 type AddNewAlbumProps = {
   setAddedNew: Dispatch<SetStateAction<boolean>>;
   darkMode: boolean;
+  albums: Album[]
 };
 
-export function AddNewAlbum({ setAddedNew, darkMode }: AddNewAlbumProps) {
-  const formRef = useRef<HTMLFormElement>(null); // ref to the form
+export function AddNewAlbum({ setAddedNew, darkMode, albums }: AddNewAlbumProps) {
 
   return (
     <div className="container my-5">
       <form
-        ref={formRef} // attach the ref
-        onSubmit={(e) => handleSubmit(e, setAddedNew, formRef)}
+        onSubmit={(e) => handleSubmit(e, setAddedNew, albums)}
         className="p-5 border rounded"
         style={{
           backgroundColor: darkMode ? "#2C2C2C" : "#96d3a7",
@@ -173,7 +171,7 @@ export function AddNewAlbum({ setAddedNew, darkMode }: AddNewAlbumProps) {
 async function handleSubmit(
   e: React.FormEvent<HTMLFormElement>,
   setAddedNew: Dispatch<SetStateAction<boolean>>,
-  formRef: React.RefObject<HTMLFormElement>
+  albums: Album[]
 ) {
   e.preventDefault();
 
@@ -184,6 +182,19 @@ async function handleSubmit(
   const albumOrEp = form.get("AlbumOrEp") as AlbumOrEp;
   const releaseYear = Number(form.get("releaseYear"));
   const rating = Number(form.get("rating"));
+
+  let exists = false;
+  albums.forEach(element => {
+    if(element.artist == artist && element.name == name && element.releaseYear == releaseYear && element.albumOrEp == albumOrEp){
+      exists = true
+    }
+  });
+
+  if(exists){
+    alert(`This ${albumOrEp} already exists`)
+    e.target.reset();
+    return;
+  }
 
   await addAlbum({
     name,
@@ -197,7 +208,7 @@ async function handleSubmit(
   setAddedNew(true);
 
   // Reset the form
-  formRef.current?.reset();
+  e.target.reset();
 }
 
 // Add album function stays the same
